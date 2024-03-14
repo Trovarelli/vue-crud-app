@@ -173,7 +173,7 @@
       display: flex;
       flex-direction: column;
       position: fixed;
-      widows: 100%;
+      width: 100%;
       max-width: 250px;
       height: 100%;
       background-color: white;
