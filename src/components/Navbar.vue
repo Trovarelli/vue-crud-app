@@ -1,9 +1,9 @@
 <template>
   <header :class="{ 'scrolled-nav': scrollNav }">
     <nav>
-      <div class="branding">
-        <img src="@/assets/logo.png">
-      </div>
+      <router-link to="/" class="branding">
+        <img src="@/assets/img/logo.svg" alt="logo-empresa">
+      </router-link>
       <ul v-show="!mobile" class="navigation">
         <li><router-link to="/clientes" class="link">
             Clientes
@@ -85,8 +85,10 @@
 </script>
 
 <style scoped lang="scss">
+  @import "@/assets/scss/_variables.scss";
+
   header {
-    background-color: rgb(0, 0, 0, 0.8);
+    background-color: rgba(214, 214, 214, 0.8);
     z-index: 99;
     width: 100%;
     position: fixed;
@@ -109,7 +111,7 @@
       ul,
       .link {
         font-weight: 500;
-        color: white;
+        color: black;
         list-style: none;
         text-decoration: none;
       }
@@ -127,8 +129,8 @@
         border-bottom: 1px solid transparent;
 
         &:hover {
-          color: #00afea;
-          border-color: #00afea;
+          color: $primary;
+          border-color: $primary;
         }
       }
 
@@ -137,7 +139,7 @@
         align-items: center;
 
         img {
-          width: 50px;
+          width: 60px;
           transition: .5s ease all;
         }
       }
@@ -205,7 +207,7 @@
   }
 
   .scrolled-nav {
-    background-color: black;
+    background-color: white;
     box-shadow: 0 4px 6px -1px rgb(0, 0, 0, 0.1), 0 2px 4px -1px rgb(0, 0, 0, 0.06);
 
     nav {
@@ -213,7 +215,7 @@
 
       .branding {
         img {
-          width: 40px;
+          width: 60px;
           box-shadow: 0 4px 6px -1px rgb(0, 0, 0, 0.1), 0 2px 4px -1px rgb(0, 0, 0, 0.06);
         }
       }
