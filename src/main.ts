@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
@@ -13,6 +13,8 @@ import "./assets/scss/global.scss";
 import "vue3-toastify/dist/index.css";
 
 library.add(faBars);
+library.add(faPencil);
+library.add(faTrash);
 
 const vuetify = createVuetify({
   components,

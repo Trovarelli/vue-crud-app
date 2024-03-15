@@ -1,6 +1,6 @@
 <template>
   <div class="pa-4 text-center">
-    <v-dialog v-model="dialog" max-width="700" persistent>
+    <v-dialog v-model="dialog" max-width="900" persistent>
       <template #activator="{ props: activatorProps }">
         <v-btn
           class="text-none font-weight-regular"
@@ -10,9 +10,9 @@
         ></v-btn>
       </template>
 
-      <v-card prepend-icon="mdi-account" title="Cadastro de Produtos">
+      <v-card title="Cadastro de Produtos">
         <v-card-text>
-          <v-form ref="myForm" v-model="valid" class="form-container">
+          <v-form ref="myForm" v-model="valid">
             <v-row>
               <v-col cols="12" sm="9">
                 <v-text-field
