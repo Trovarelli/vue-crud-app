@@ -16,7 +16,9 @@ export default {
   <main>
     <Navbar />
     <div class="main-container">
-      <router-view />
+      <div class="container">
+        <router-view />
+      </div>
     </div>
   </main>
 </template>
@@ -27,5 +29,10 @@ export default {
   margin: 0 0.8rem;
   display: flex;
   justify-content: center;
+
+  .container {
+    width: 100%;
+    max-width: 1400px;
+  }
 }
 </style>

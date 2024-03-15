@@ -91,7 +91,7 @@ header {
   width: 100%;
   position: fixed;
   transition: 0.5s ease all;
-  color: $primary;
+  color: $text;
 
   nav {
     position: relative;
