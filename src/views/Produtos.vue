@@ -19,12 +19,18 @@
     </v-dialog>
     <v-row>
       <v-col cols="12" class="button-title-container">
-        <h2>Tabela de Produtos</h2>
-        <CadastroProdutoModal
-          :open-modal="openModal"
-          :produto-id="produtoId"
-          @closed="handleModalClose"
-        />
+        <v-row>
+          <v-col cols="12" sm="6" class="d-flex align-center">
+            <h2>Tabela de Produtos</h2>
+          </v-col>
+          <v-col cols="12" sm="6" class="button-col">
+            <CadastroProdutoModal
+              :open-modal="openModal"
+              :produto-id="produtoId"
+              @closed="handleModalClose"
+            />
+          </v-col>
+        </v-row>
       </v-col>
       <v-col cols="12">
         <v-data-table
@@ -172,5 +178,14 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.button-col {
+  display: flex;
+  justify-content: end;
+
+  @media only screen and (max-width: 600px) {
+    justify-content: center;
+  }
 }
 </style>

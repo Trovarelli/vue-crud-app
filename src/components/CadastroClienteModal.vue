@@ -66,10 +66,11 @@
               <v-col cols="12" sm="6">
                 <!-- O multiple esta habilitado condicionalmente devido a um bug do vuetify -->
                 <v-combobox
-                  v-model="cliente.produtos"
+                  v-model="cliente.produtosIds"
                   color="primary"
                   :items="produtos"
                   item-title="name"
+                  item-value="id"
                   label="Produtos Associados"
                   chips
                   :multiple="dialog"
@@ -113,6 +114,7 @@ import { toast } from "vue3-toastify";
 import { mask as vmask } from "vue-the-mask";
 import { useStore } from "vuex";
 import { CPFValidator } from "../validators";
+import { Produto } from "@/types/ProdutoModel";
 
 export default defineComponent({
   name: "CadastroClienteModal",
@@ -144,7 +146,7 @@ export default defineComponent({
         phone: "",
         ativo: "Sim" as "Sim" | "Não",
         email: "",
-        produtos: [],
+        produtosIds: [],
       },
       nameRules: [
         (value: string) => {
@@ -193,14 +195,20 @@ export default defineComponent({
     const produtos = computed(() => store.getters.getProdutos);
 
     const saveCliente = () => {
-      store.dispatch("adicionarNovoCliente", state.cliente);
+      store.dispatch("adicionarNovoCliente", {
+        ...state.cliente,
+        produtosIds: state.cliente.produtosIds.map((el: Produto) => el.id),
+      });
       toast.success("Cliente cadastrado com sucesso", {
         autoClose: 3000,
       });
     };
 
     const updateCliente = () => {
-      store.dispatch("editarClienteExistente", state.cliente);
+      store.dispatch("editarClienteExistente", {
+        ...state.cliente,
+        produtosIds: state.cliente.produtosIds.map((el: Produto) => el.id),
+      });
       toast.success("Cliente editado com sucesso", {
         autoClose: 3000,
       });

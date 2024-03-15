@@ -24,12 +24,18 @@
     </v-dialog>
     <v-row>
       <v-col cols="12" class="button-title-container">
-        <h2>Tabela de Clientes</h2>
-        <CadastroClienteModal
-          :open-modal="openFormModal"
-          :cliente-id="clienteId"
-          @closed="handleModalClose"
-        />
+        <v-row>
+          <v-col cols="12" sm="6" class="d-flex align-center">
+            <h2>Tabela de Clientes</h2>
+          </v-col>
+          <v-col cols="12" sm="6" class="button-col">
+            <CadastroClienteModal
+              :open-modal="openFormModal"
+              :cliente-id="clienteId"
+              @closed="handleModalClose"
+            />
+          </v-col>
+        </v-row>
       </v-col>
       <v-col cols="12">
         <v-data-table
@@ -45,15 +51,20 @@
               {{ value }}
             </v-chip>
           </template>
-          <template #[`item.produtos`]="{ value }">
+          <template #[`item.produtosIds`]="{ value }">
             <div class="pa-3">
               <strong
-                v-for="(item, index) in value as Cliente['produtos']"
-                :key="item.id"
+                v-for="(id, index) in value as number[]"
+                :key="index"
                 class=""
               >
-                {{ item.name }}
-                {{ index === value.length - 1 ? "" : ", " }}
+                {{ produtos?.find((el: Produto) => el.id === id)?.name ?? "" }}
+                {{
+                  index === value.length - 1 ||
+                  !produtos?.find((el: Produto) => el.id === id)?.name
+                    ? ""
+                    : ", "
+                }}
               </strong>
             </div>
           </template>
@@ -112,6 +123,7 @@ import { toast } from "vue3-toastify";
 import { Cliente } from "@/types/ClienteModel";
 import CadastroClienteModal from "@/components/CadastroClienteModal.vue";
 import ProdutosClientes from "@/components/ProdutosClientesModal.vue";
+import { Produto } from "@/types/ProdutoModel";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
@@ -130,7 +142,7 @@ export default defineComponent({
       { title: "Documento(CPF)", align: "center", key: "document" },
       { title: "E-mail", align: "center", key: "email" },
       { title: "Telefone", align: "center", key: "phone" },
-      { title: "Produtos", align: "center", key: "produtos" },
+      { title: "Produtos", align: "center", key: "produtosIds" },
       { title: "Ações", align: "center", key: "actions", sortable: false },
     ];
 
@@ -180,11 +192,13 @@ export default defineComponent({
     };
 
     const clientes = computed(() => store.getters.getClientes);
+    const produtos = computed(() => store.getters.getProdutos);
 
     return {
       headers,
       clientes,
       confirmActiveInactiveDialog,
+      produtos,
       handleCloseActiveInactiveDialog,
       ...toRefs(state),
       handleModalClose,
@@ -211,5 +225,14 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.button-col {
+  display: flex;
+  justify-content: end;
+
+  @media only screen and (max-width: 600px) {
+    justify-content: center;
+  }
 }
 </style>

@@ -16,10 +16,11 @@
               <v-col cols="12" sm="8">
                 <!-- O multiple esta habilitado condicionalmente devido a um bug do vuetify -->
                 <v-combobox
-                  v-model="cliente.produtos"
+                  v-model="cliente.produtosIds"
                   color="primary"
                   :items="produtos"
                   item-title="name"
+                  item-value="id"
                   label="Produtos Associados"
                   chips
                   :multiple="dialog"
@@ -49,6 +50,7 @@
 </template>
 
 <script lang="ts">
+import { Produto } from "@/types/ProdutoModel";
 import {
   reactive,
   toRefs,
@@ -88,7 +90,7 @@ export default defineComponent({
         phone: "",
         ativo: "Sim" as "Sim" | "Não",
         email: "",
-        produtos: [],
+        produtosIds: [],
       },
     });
 
@@ -97,10 +99,15 @@ export default defineComponent({
     const produtos = computed(() => store.getters.getProdutos);
 
     const handleAssociarProdutos = () => {
-      store.dispatch("editarClienteExistente", state.cliente);
+      store.dispatch("editarClienteExistente", {
+        ...state.cliente,
+        produtosIds: state.cliente.produtosIds.map((el: Produto) => el.id),
+      });
       toast.success("Cliente editado com sucesso", {
         autoClose: 3000,
       });
+      state.dialog = false;
+      emit("closed");
     };
 
     const handleClose = () => {
