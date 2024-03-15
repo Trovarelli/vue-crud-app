@@ -54,3 +54,5 @@ Em relação aos testes unitários, reconheço que não pude escrever tantos qua
 Ao longo do processo, foquei na organização e estruturação do código, visando facilitar sua manutenção e extensibilidade. Acredito que essa abordagem contribuiu significativamente para a qualidade do resultado final.
 
 Em resumo, este projeto representou uma oportunidade de aprendizado e crescimento. Estou confiante de que as funcionalidades implementadas atendem às expectativas e demonstram minhas habilidades e dedicação ao desenvolvimento Vue.js. Estou ansioso para receber feedback e continuar aprimorando minhas habilidades nesta incrível tecnologia.
+
+### Link para ver o site rodando: https://vue-crud-app-7e3w.onrender.com/
