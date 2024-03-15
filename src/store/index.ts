@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import createPersistedState from "vuex-persistedstate";
 
 interface Produto {
   id: number;
@@ -7,6 +8,7 @@ interface Produto {
 }
 
 interface Cliente {
+  id: number;
   name: string;
   document: string;
   phone: string;
@@ -15,10 +17,12 @@ interface Cliente {
 }
 
 export default createStore({
+  plugins: [createPersistedState()],
   state: {
     produtos: [] as Produto[],
     clientes: [
       {
+        id: 1,
         ativo: "Sim",
         document: "707.333.520-30",
         email: "joaosilva@gmail.com",
@@ -40,7 +44,24 @@ export default createStore({
       state.produtos.push(novoProduto);
     },
     adicionarCliente(state, novoCliente: Cliente) {
-      state.clientes.push(novoCliente);
+      const id = state.clientes[state.clientes.length - 1].id + 1;
+      state.clientes.push({
+        ...novoCliente,
+        id,
+      });
+    },
+    editarCliente(state, clienteEditado) {
+      const index = state.clientes.findIndex(
+        (cliente) => cliente.id === clienteEditado.id
+      );
+      if (index !== -1) {
+        state.clientes.splice(index, 1, clienteEditado);
+      }
+    },
+    removerCliente(state, idCliente) {
+      state.clientes = state.clientes.filter(
+        (cliente) => cliente.id !== idCliente
+      );
     },
   },
   actions: {
