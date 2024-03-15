@@ -36,6 +36,7 @@ O projeto está estruturado da seguinte forma:
 4. Instale as dependências do projeto executando o comando: npm install (yarn)
 5. Após a instalação das dependências, inicie o servidor de desenvolvimento com o comando: npm run dev (yarn dev)
 6. O servidor de desenvolvimento estará disponível em `http://localhost:8080`.
+7. Caso queira ver ele funcionando, o deploy foi feito na plataforma Render: https://vue-crud-app-7e3w.onrender.com/
 
 ## Testes Unitários
 
@@ -54,5 +55,3 @@ Em relação aos testes unitários, reconheço que não pude escrever tantos qua
 Ao longo do processo, foquei na organização e estruturação do código, visando facilitar sua manutenção e extensibilidade. Acredito que essa abordagem contribuiu significativamente para a qualidade do resultado final.
 
 Em resumo, este projeto representou uma oportunidade de aprendizado e crescimento. Estou confiante de que as funcionalidades implementadas atendem às expectativas e demonstram minhas habilidades e dedicação ao desenvolvimento Vue.js. Estou ansioso para receber feedback e continuar aprimorando minhas habilidades nesta incrível tecnologia.
-
-### Link para ver o site rodando: https://vue-crud-app-7e3w.onrender.com/
