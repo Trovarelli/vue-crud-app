@@ -1,3 +1,5 @@
+import { Produto } from "./ProdutoModel";
+
 export interface Cliente {
   id: number;
   name: string;
@@ -5,4 +7,5 @@ export interface Cliente {
   phone: string;
   ativo: "Sim" | "Não";
   email: string;
+  produtos: Produto[];
 }

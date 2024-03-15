@@ -21,6 +21,7 @@ export default createStore({
         email: "joaosilva@gmail.com",
         name: "João da Silva Ouriço",
         phone: "(14) 99188-6974",
+        produtos: [],
       },
     ] as Cliente[],
   },

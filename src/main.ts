@@ -13,9 +13,9 @@ import * as directives from "vuetify/directives";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import "vuetify/styles";
 import "./assets/scss/global.scss";
 import "vue3-toastify/dist/index.css";
+import "vuetify/styles";
 
 library.add(faBars);
 library.add(faPencil);
@@ -25,11 +25,12 @@ library.add(faListDots);
 const vuetify = createVuetify({
   components,
   directives,
+  theme: {},
 });
 
 createApp(App)
+  .use(vuetify)
   .use(store)
   .use(router)
-  .use(vuetify)
   .component("font-awesome-icon", FontAwesomeIcon)
   .mount("#app");

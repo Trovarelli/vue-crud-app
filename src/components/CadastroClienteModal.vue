@@ -14,7 +14,15 @@
         <v-card-text>
           <v-form ref="formRef" v-model="valid">
             <v-row>
-              <v-col cols="12" class="siwtch-div">
+              <v-col cols="12" sm="10">
+                <v-text-field
+                  v-model="cliente.name"
+                  :rules="nameRules"
+                  label="Nome"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="2" class="siwtch-div">
                 <v-switch
                   v-model="cliente.ativo"
                   :label="`Ativo: ${cliente.ativo}`"
@@ -23,14 +31,6 @@
                   true-value="Sim"
                   hide-details
                 ></v-switch>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-text-field
-                  v-model="cliente.name"
-                  :rules="nameRules"
-                  label="Nome"
-                  required
-                ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
                 <v-text-field
@@ -57,6 +57,17 @@
                   label="E-mail"
                   required
                 ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <!-- O multiple esta habilitado condicionalmente devido a um bug do vuetify -->
+                <v-combobox
+                  v-model="cliente.produtos"
+                  :items="produtos"
+                  item-title="name"
+                  label="Produtos Associados"
+                  chips
+                  :multiple="dialog"
+                ></v-combobox>
               </v-col>
             </v-row>
           </v-form>
@@ -90,11 +101,13 @@ import {
   watchEffect,
   ref,
   onMounted,
+  computed,
 } from "vue";
 import { toast } from "vue3-toastify";
 import { mask as vmask } from "vue-the-mask";
 import { useStore } from "vuex";
 import { CPFValidator } from "../validators";
+import { Produto } from "@/types/ProdutoModel";
 
 export default defineComponent({
   name: "CadastroClienteModal",
@@ -126,6 +139,7 @@ export default defineComponent({
         phone: "",
         ativo: "Sim" as "Sim" | "Não",
         email: "",
+        produtos: [],
       },
       nameRules: [
         (value: string) => {
@@ -170,6 +184,8 @@ export default defineComponent({
     });
 
     const store = useStore();
+
+    const produtos = computed(() => store.getters.getProdutos);
 
     const saveCliente = () => {
       store.dispatch("adicionarNovoCliente", state.cliente);
@@ -239,6 +255,7 @@ export default defineComponent({
     return {
       ...toRefs(state),
       formRef,
+      produtos,
       handleValidation,
       handleClose,
     };
