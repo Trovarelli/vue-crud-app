@@ -1,5 +1,10 @@
 <template>
   <v-container class="container">
+    <ProdutosClientes
+      :open-modal="openClientesProdutosModal"
+      :cliente-id="clienteId"
+      @closed="handleModalClose"
+    />
     <v-dialog v-model="confirmDialog" max-width="340">
       <v-card text="Deseja Ativar/Desativar o Cliente ?" title="Atenção !">
         <template #actions>
@@ -21,7 +26,7 @@
       <v-col cols="12" class="button-title-container">
         <h2>Tabela de Clientes</h2>
         <CadastroClienteModal
-          :open-modal="openModal"
+          :open-modal="openFormModal"
           :cliente-id="clienteId"
           @closed="handleModalClose"
         />
@@ -39,6 +44,18 @@
             <v-chip :color="getColor(value)">
               {{ value }}
             </v-chip>
+          </template>
+          <template #[`item.produtos`]="{ value }">
+            <div class="pa-3">
+              <strong
+                v-for="(item, index) in value as Cliente['produtos']"
+                :key="item.id"
+                class=""
+              >
+                {{ item.name }}
+                {{ index === value.length - 1 ? "" : ", " }}
+              </strong>
+            </div>
           </template>
           <template #[`item.actions`]="{ item }">
             <v-menu>
@@ -70,6 +87,14 @@
                     }}
                   </v-list-item-title>
                 </v-list-item>
+                <v-list-item>
+                  <v-list-item-title
+                    class="cursor-pointer flex items-center"
+                    @click="handleAssociarProdutos(item as Cliente)"
+                  >
+                    Associar Produtos
+                  </v-list-item-title>
+                </v-list-item>
               </v-list>
             </v-menu>
           </template>
@@ -86,6 +111,7 @@ import type { VDataTable } from "vuetify/components";
 import { toast } from "vue3-toastify";
 import { Cliente } from "@/types/ClienteModel";
 import CadastroClienteModal from "@/components/CadastroClienteModal.vue";
+import ProdutosClientes from "@/components/ProdutosClientesModal.vue";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
@@ -93,6 +119,7 @@ export default defineComponent({
   name: "Clientes",
   components: {
     CadastroClienteModal,
+    ProdutosClientes,
   },
   setup() {
     const store = useStore();
@@ -103,28 +130,36 @@ export default defineComponent({
       { title: "Documento(CPF)", align: "center", key: "document" },
       { title: "E-mail", align: "center", key: "email" },
       { title: "Telefone", align: "center", key: "phone" },
+      { title: "Produtos", align: "center", key: "produtos" },
       { title: "Ações", align: "center", key: "actions", sortable: false },
     ];
 
     const state = reactive({
-      openModal: false,
+      openFormModal: false,
+      openClientesProdutosModal: false,
       clienteId: 0,
       confirmDialog: false,
     });
 
     const handleModalClose = () => {
-      state.openModal = false;
+      state.openFormModal = false;
+      state.openClientesProdutosModal = false;
       state.clienteId = 0;
     };
 
     const editItem = (item: Cliente) => {
       state.clienteId = item.id;
-      state.openModal = true;
+      state.openFormModal = true;
     };
 
     const activeInactiveItem = (item: Cliente) => {
       state.clienteId = item.id;
       state.confirmDialog = true;
+    };
+
+    const handleAssociarProdutos = (item: Cliente) => {
+      state.clienteId = item.id;
+      state.openClientesProdutosModal = true;
     };
 
     const handleCloseActiveInactiveDialog = () => {
@@ -153,6 +188,7 @@ export default defineComponent({
       handleCloseActiveInactiveDialog,
       ...toRefs(state),
       handleModalClose,
+      handleAssociarProdutos,
       editItem,
       activeInactiveItem,
       getColor,
@@ -175,11 +211,5 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.pencil {
-  cursor: pointer;
-  color: #2983ce;
-  margin-right: 5px;
 }
 </style>

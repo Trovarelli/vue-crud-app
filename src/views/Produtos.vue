@@ -173,10 +173,4 @@ export default defineComponent({
   align-items: center;
   justify-content: space-between;
 }
-
-.pencil {
-  cursor: pointer;
-  color: #2983ce;
-  margin-right: 5px;
-}
 </style>

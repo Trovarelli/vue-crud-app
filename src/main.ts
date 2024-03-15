@@ -16,6 +16,8 @@ import store from "./store";
 import "./assets/scss/global.scss";
 import "vue3-toastify/dist/index.css";
 import "vuetify/styles";
+import "@mdi/font/css/materialdesignicons.css";
+import "@fortawesome/fontawesome-free/css/all.css";
 
 library.add(faBars);
 library.add(faPencil);
@@ -25,7 +27,6 @@ library.add(faListDots);
 const vuetify = createVuetify({
   components,
   directives,
-  theme: {},
 });
 
 createApp(App)

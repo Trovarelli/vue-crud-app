@@ -14,15 +14,7 @@
         <v-card-text>
           <v-form ref="formRef" v-model="valid">
             <v-row>
-              <v-col cols="12" sm="10">
-                <v-text-field
-                  v-model="produto.name"
-                  :rules="nameRules"
-                  label="Nome"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="2" class="siwtch-div">
+              <v-col cols="12" sm="4" md="2" class="siwtch-div">
                 <v-switch
                   v-model="produto.ativo"
                   :label="`Ativo: ${produto.ativo}`"
@@ -31,6 +23,15 @@
                   true-value="Sim"
                   hide-details
                 ></v-switch>
+              </v-col>
+              <v-col cols="12" sm="8" md="10">
+                <v-text-field
+                  v-model="produto.name"
+                  :rules="nameRules"
+                  color="primary"
+                  label="Nome"
+                  required
+                ></v-text-field>
               </v-col>
             </v-row>
           </v-form>
@@ -189,7 +190,6 @@ export default defineComponent({
 <style scoped lang="scss">
 .siwtch-div {
   display: flex;
-  justify-content: end;
   align-items: center;
 }
 </style>

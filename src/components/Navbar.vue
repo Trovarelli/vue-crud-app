@@ -6,6 +6,9 @@
       </router-link>
       <ul v-show="!mobile" class="navigation">
         <li>
+          <router-link to="/" class="link"> Home </router-link>
+        </li>
+        <li>
           <router-link to="/clientes" class="link"> Clientes </router-link>
         </li>
         <li>
@@ -18,11 +21,14 @@
           :class="{ 'icon-active': mobileNav }"
           @click="toggleMobileNav"
         >
-          <font-awesome-icon icon="bars"
-        /></span>
+          <font-awesome-icon icon="bars" />
+        </span>
       </div>
       <transition name="mobile-nav">
         <ul v-show="mobileNav" class="dropdown-nav">
+          <li>
+            <router-link to="/" class="link"> Home </router-link>
+          </li>
           <li>
             <router-link to="/clientes" class="link"> Clientes </router-link>
           </li>
@@ -36,48 +42,42 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref, onMounted } from "vue";
 
 export default defineComponent({
-  data() {
-    return {
-      scrollNav: false,
-      mobile: false,
-      mobileNav: false,
-      windowWidth: 0,
+  setup() {
+    const scrollNav = ref(false);
+    const mobile = ref(false);
+    const mobileNav = ref(false);
+    const windowWidth = ref(0);
+
+    const toggleMobileNav = () => {
+      mobileNav.value = !mobileNav.value;
     };
-  },
-  created() {
-    window.addEventListener("resize", this.checkScreen);
-    this.checkScreen();
-  },
-  mounted() {
-    window.addEventListener("scroll", this.updateScroll);
-  },
-  methods: {
-    toggleMobileNav() {
-      this.mobileNav = !this.mobileNav;
-    },
 
-    updateScroll() {
+    const updateScroll = () => {
       const scrollPosition = window.scrollY;
-      if (scrollPosition > 50) {
-        this.scrollNav = true;
-        return;
-      }
-      this.scrollNav = false;
-    },
+      scrollNav.value = scrollPosition > 50;
+    };
 
-    checkScreen() {
-      this.windowWidth = window.innerWidth;
-      if (this.windowWidth <= 750) {
-        this.mobile = true;
-        return;
-      }
-      this.mobile = false;
-      this.mobileNav = false;
-      return;
-    },
+    const checkScreen = () => {
+      windowWidth.value = window.innerWidth;
+      mobile.value = windowWidth.value <= 750;
+      if (mobile.value) mobileNav.value = false;
+    };
+
+    onMounted(() => {
+      window.addEventListener("resize", checkScreen);
+      window.addEventListener("scroll", updateScroll);
+      checkScreen();
+    });
+
+    return {
+      scrollNav,
+      mobile,
+      mobileNav,
+      toggleMobileNav,
+    };
   },
 });
 </script>

@@ -14,15 +14,7 @@
         <v-card-text>
           <v-form ref="formRef" v-model="valid">
             <v-row>
-              <v-col cols="12" sm="10">
-                <v-text-field
-                  v-model="cliente.name"
-                  :rules="nameRules"
-                  label="Nome"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="2" class="siwtch-div">
+              <v-col cols="12" sm="4" md="2" class="siwtch-div">
                 <v-switch
                   v-model="cliente.ativo"
                   :label="`Ativo: ${cliente.ativo}`"
@@ -32,10 +24,21 @@
                   hide-details
                 ></v-switch>
               </v-col>
+              <v-col cols="12" sm="8" md="10">
+                <v-text-field
+                  v-model="cliente.name"
+                  color="primary"
+                  :rules="nameRules"
+                  label="Nome"
+                  required
+                ></v-text-field>
+              </v-col>
+
               <v-col cols="12" sm="6">
                 <v-text-field
                   v-model="cliente.document"
                   v-mask="'###.###.###-##'"
+                  color="primary"
                   :rules="documentRules"
                   label="Documento(CPF)"
                   required
@@ -45,6 +48,7 @@
                 <v-text-field
                   v-model="cliente.phone"
                   v-mask="['(##) ####-####', '(##) #####-####']"
+                  color="primary"
                   :rules="phoneRules"
                   label="Telefone"
                   required
@@ -53,6 +57,7 @@
               <v-col cols="12" sm="6">
                 <v-text-field
                   v-model="cliente.email"
+                  color="primary"
                   :rules="emailRules"
                   label="E-mail"
                   required
@@ -62,6 +67,7 @@
                 <!-- O multiple esta habilitado condicionalmente devido a um bug do vuetify -->
                 <v-combobox
                   v-model="cliente.produtos"
+                  color="primary"
                   :items="produtos"
                   item-title="name"
                   label="Produtos Associados"
@@ -107,7 +113,6 @@ import { toast } from "vue3-toastify";
 import { mask as vmask } from "vue-the-mask";
 import { useStore } from "vuex";
 import { CPFValidator } from "../validators";
-import { Produto } from "@/types/ProdutoModel";
 
 export default defineComponent({
   name: "CadastroClienteModal",
@@ -266,7 +271,6 @@ export default defineComponent({
 <style scoped lang="scss">
 .siwtch-div {
   display: flex;
-  justify-content: end;
   align-items: center;
 }
 </style>
