@@ -137,7 +137,13 @@ export default defineComponent({
       );
     };
 
-    return { ...toRefs(state), notify };
+    const store = useStore();
+
+    const test = () => {
+      store.dispatch("adicionarNovoCliente", state.cliente);
+    };
+
+    return { ...toRefs(state), notify, test };
   },
 
   created() {
@@ -161,9 +167,7 @@ export default defineComponent({
         return;
       }
 
-      const store = useStore();
-
-      store.dispatch("adicionarCliente", this.cliente);
+      this.test();
     },
   },
 });
