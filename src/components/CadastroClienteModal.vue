@@ -12,7 +12,7 @@
 
       <v-card title="Cadastro de Clientes">
         <v-card-text>
-          <v-form ref="myForm" v-model="valid">
+          <v-form ref="formRef" v-model="valid">
             <v-row>
               <v-col cols="12" class="siwtch-div">
                 <v-switch
@@ -67,15 +67,11 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn
-            text="Cancelar"
-            variant="plain"
-            @click="dialog = false"
-          ></v-btn>
+          <v-btn text="Cancelar" variant="plain" @click="handleClose"></v-btn>
 
           <v-btn
             color="primary"
-            text="Cadastrar"
+            :text="clienteId ? 'Atualizar' : 'Cadastrar'"
             variant="tonal"
             @click="handleValidation"
           ></v-btn>
@@ -86,22 +82,45 @@
 </template>
 
 <script lang="ts">
-import { reactive, toRefs, Directive } from "vue";
+import {
+  reactive,
+  toRefs,
+  Directive,
+  defineComponent,
+  watchEffect,
+  ref,
+  onMounted,
+} from "vue";
 import { toast } from "vue3-toastify";
 import { mask as vmask } from "vue-the-mask";
 import { useStore } from "vuex";
 import { CPFValidator } from "../validators";
 
-export default {
+export default defineComponent({
+  name: "CadastroClienteModal",
   directives: {
     mask: vmask as Directive,
   },
-  setup() {
+  props: {
+    openModal: {
+      type: Boolean,
+      default: false,
+    },
+    clienteId: {
+      type: Number,
+      default: undefined,
+    },
+  },
+
+  setup(props, { emit }) {
+    const formRef = ref<HTMLFormElement | null>(null);
+
     const state = reactive({
       mobile: false,
       dialog: false,
       valid: false,
       cliente: {
+        id: 1,
         name: "",
         document: "",
         phone: "",
@@ -111,115 +130,120 @@ export default {
       nameRules: [
         (value: string) => {
           if (value) return true;
-
           return "Campo Obrigatório.";
         },
         (value: string) => {
           if (value?.length <= 100) return true;
-
           return "Limite de 100 caracteres";
         },
       ],
       documentRules: [
         (value: string) => {
           if (value) return true;
-
           return "Campo Obrigatório.";
         },
         (value: string) => {
           if (!CPFValidator(value)) return "CPF Inválido";
-
           return true;
         },
       ],
       phoneRules: [
         (value: string) => {
           if (value) return true;
-
           return "Campo Obrigatório.";
         },
         (value: string) => {
           if (value?.length <= 15 && value?.length >= 14) return true;
-
           return "Número de Telefone inválido";
         },
       ],
       emailRules: [
         (value: string) => {
           if (value) return true;
-
           return "Campo Obrigatório";
         },
         (value: string) => {
           if (/.+@.+\..+/.test(value)) return true;
-
           return "O E-mail precisa ser válido.";
         },
       ],
     });
 
-    const errNotify = () => {
-      toast.error(
-        "Ops! Parece que algo não está certo com o formulário. Por favor, dê uma olhada e corrija se precisar.",
-        {
-          autoClose: 3000,
-        }
-      );
-    };
-
     const store = useStore();
 
     const saveCliente = () => {
       store.dispatch("adicionarNovoCliente", state.cliente);
-
       toast.success("Cliente cadastrado com sucesso", {
         autoClose: 3000,
       });
     };
 
+    const updateCliente = () => {
+      store.dispatch("editarClienteExistente", state.cliente);
+      toast.success("Cliente editado com sucesso", {
+        autoClose: 3000,
+      });
+    };
+
+    const handleResetForm = () => {
+      if (formRef.value) {
+        formRef.value.reset();
+        state.cliente.ativo = "Sim";
+      }
+    };
+
+    const handleClose = () => {
+      state.dialog = false;
+      emit("closed");
+      handleResetForm();
+    };
+
+    const handleCheckScreen = () => {
+      if (window.innerWidth <= 750) {
+        state.mobile = true;
+      } else {
+        state.mobile = false;
+      }
+    };
+
+    const handleValidation = () => {
+      if (!state.valid) {
+        toast.error(
+          "Ops! Parece que algo não está certo com o formulário. Por favor, dê uma olhada e corrija se precisar.",
+          {
+            autoClose: 3000,
+          }
+        );
+        return;
+      }
+      if (props.clienteId) updateCliente();
+      else saveCliente();
+      handleResetForm();
+      handleClose();
+    };
+
+    watchEffect(() => {
+      if (props.openModal) {
+        state.dialog = props.openModal;
+      }
+      if (props.clienteId !== 0 && state.dialog) {
+        state.cliente = { ...store.getters.getClienteById(props.clienteId) };
+      } else if (!state.dialog) handleResetForm();
+    });
+
+    onMounted(() => {
+      window.addEventListener("resize", handleCheckScreen);
+      handleCheckScreen();
+    });
+
     return {
       ...toRefs(state),
-      errNotify,
-      saveCliente,
+      formRef,
+      handleValidation,
+      handleClose,
     };
   },
-  computed: {
-    produtos() {
-      const store = useStore();
-      return store.getters.getClientes;
-    },
-  },
-
-  created() {
-    window.addEventListener("resize", this.handleCheckScreen);
-    this.handleCheckScreen();
-  },
-
-  methods: {
-    handleCheckScreen() {
-      if (window.innerWidth <= 750) {
-        this.mobile = true;
-        return;
-      }
-      this.mobile = false;
-      return;
-    },
-
-    handleValidation() {
-      if (!this.valid) {
-        this.errNotify();
-        return;
-      }
-
-      this.saveCliente();
-      if (this.$refs.myForm) {
-        (this.$refs.myForm as HTMLFormElement).reset();
-      }
-
-      this.dialog = false;
-    },
-  },
-};
+});
 </script>
 
 <style scoped lang="scss">

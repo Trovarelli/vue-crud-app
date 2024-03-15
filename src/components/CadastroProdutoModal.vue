@@ -12,17 +12,9 @@
 
       <v-card title="Cadastro de Produtos">
         <v-card-text>
-          <v-form ref="myForm" v-model="valid">
+          <v-form ref="formRef" v-model="valid">
             <v-row>
-              <v-col cols="12" sm="9">
-                <v-text-field
-                  v-model="produto.name"
-                  :rules="nameRules"
-                  label="Nome do Produto"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="3">
+              <v-col cols="12" class="siwtch-div">
                 <v-switch
                   v-model="produto.ativo"
                   :label="`Ativo: ${produto.ativo}`"
@@ -31,6 +23,14 @@
                   true-value="Sim"
                   hide-details
                 ></v-switch>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-text-field
+                  v-model="produto.name"
+                  :rules="nameRules"
+                  label="Nome"
+                  required
+                ></v-text-field>
               </v-col>
             </v-row>
           </v-form>
@@ -41,15 +41,11 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn
-            text="Cancelar"
-            variant="plain"
-            @click="dialog = false"
-          ></v-btn>
+          <v-btn text="Cancelar" variant="plain" @click="handleClose"></v-btn>
 
           <v-btn
             color="primary"
-            text="Cadastrar"
+            :text="produtoId ? 'Atualizar' : 'Cadastrar'"
             variant="tonal"
             @click="handleValidation"
           ></v-btn>
@@ -60,95 +56,140 @@
 </template>
 
 <script lang="ts">
-import { reactive, toRefs } from "vue";
+import {
+  reactive,
+  toRefs,
+  Directive,
+  defineComponent,
+  watchEffect,
+  ref,
+  onMounted,
+} from "vue";
 import { toast } from "vue3-toastify";
+import { mask as vmask } from "vue-the-mask";
 import { useStore } from "vuex";
 
-export default {
-  setup() {
+export default defineComponent({
+  name: "CadastroProdutoModal",
+  directives: {
+    mask: vmask as Directive,
+  },
+  props: {
+    openModal: {
+      type: Boolean,
+      default: false,
+    },
+    produtoId: {
+      type: Number,
+      default: undefined,
+    },
+  },
+
+  setup(props, { emit }) {
+    const formRef = ref<HTMLFormElement | null>(null);
+
     const state = reactive({
       mobile: false,
-      valid: false,
       dialog: false,
+      valid: false,
       produto: {
+        id: 1,
         name: "",
-        ativo: "Sim" as "Sim" | "Não",
+        ativo: "Sim",
       },
       nameRules: [
         (value: string) => {
           if (value) return true;
-
           return "Campo Obrigatório.";
         },
         (value: string) => {
           if (value?.length <= 100) return true;
-
           return "Limite de 100 caracteres";
         },
       ],
     });
 
-    const errNotify = () => {
-      toast.error(
-        "Ops! Parece que algo não está certo com o formulário. Por favor, dê uma olhada e corrija se precisar.",
-        {
-          autoClose: 3000,
-        }
-      );
-    };
-
     const store = useStore();
 
     const saveProduto = () => {
       store.dispatch("adicionarNovoProduto", state.produto);
-
       toast.success("Produto cadastrado com sucesso", {
         autoClose: 3000,
       });
     };
 
+    const updateProduto = () => {
+      store.dispatch("editarProdutoExistente", state.produto);
+      toast.success("Produto editado com sucesso", {
+        autoClose: 3000,
+      });
+    };
+
+    const handleResetForm = () => {
+      if (formRef.value) {
+        formRef.value.reset();
+        state.produto.ativo = "Sim";
+      }
+    };
+
+    const handleClose = () => {
+      state.dialog = false;
+      emit("closed");
+      handleResetForm();
+    };
+
+    const handleCheckScreen = () => {
+      if (window.innerWidth <= 750) {
+        state.mobile = true;
+      } else {
+        state.mobile = false;
+      }
+    };
+
+    const handleValidation = () => {
+      if (!state.valid) {
+        toast.error(
+          "Ops! Parece que algo não está certo com o formulário. Por favor, dê uma olhada e corrija se precisar.",
+          {
+            autoClose: 3000,
+          }
+        );
+        return;
+      }
+      if (props.produtoId) updateProduto();
+      else saveProduto();
+      handleResetForm();
+      handleClose();
+    };
+
+    watchEffect(() => {
+      if (props.openModal) {
+        state.dialog = props.openModal;
+      }
+      if (props.produtoId !== 0 && state.dialog) {
+        state.produto = { ...store.getters.getProdutoById(props.produtoId) };
+      } else if (!state.dialog) handleResetForm();
+    });
+
+    onMounted(() => {
+      window.addEventListener("resize", handleCheckScreen);
+      handleCheckScreen();
+    });
+
     return {
       ...toRefs(state),
-      errNotify,
-      saveProduto,
+      formRef,
+      handleValidation,
+      handleClose,
     };
   },
-
-  computed: {
-    produtos() {
-      const store = useStore();
-      return store.getters.getProdutos;
-    },
-  },
-
-  created() {
-    window.addEventListener("resize", this.handleCheckScreen);
-    this.handleCheckScreen();
-  },
-
-  methods: {
-    handleCheckScreen() {
-      if (window.innerWidth <= 750) {
-        this.mobile = true;
-        return;
-      }
-      this.mobile = false;
-      return;
-    },
-
-    handleValidation() {
-      if (!this.valid) {
-        this.errNotify();
-        return;
-      }
-
-      this.saveProduto();
-      if (this.$refs.myForm) {
-        (this.$refs.myForm as HTMLFormElement).reset();
-      }
-
-      this.dialog = false;
-    },
-  },
-};
+});
 </script>
+
+<style scoped lang="scss">
+.siwtch-div {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+</style>

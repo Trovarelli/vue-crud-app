@@ -1,4 +1,6 @@
 export const CPFValidator = (cpf: string) => {
+  if (!cpf) return false;
+
   cpf = cpf.replace(/[^\d]+/g, "");
   if (cpf == "") return false;
 
