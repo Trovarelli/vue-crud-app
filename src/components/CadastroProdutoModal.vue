@@ -14,7 +14,15 @@
         <v-card-text>
           <v-form ref="formRef" v-model="valid">
             <v-row>
-              <v-col cols="12" class="siwtch-div">
+              <v-col cols="12" sm="10">
+                <v-text-field
+                  v-model="produto.name"
+                  :rules="nameRules"
+                  label="Nome"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="2" class="siwtch-div">
                 <v-switch
                   v-model="produto.ativo"
                   :label="`Ativo: ${produto.ativo}`"
@@ -23,14 +31,6 @@
                   true-value="Sim"
                   hide-details
                 ></v-switch>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-text-field
-                  v-model="produto.name"
-                  :rules="nameRules"
-                  label="Nome"
-                  required
-                ></v-text-field>
               </v-col>
             </v-row>
           </v-form>

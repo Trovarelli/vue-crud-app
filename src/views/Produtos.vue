@@ -1,7 +1,7 @@
 <template>
   <v-container class="container">
     <v-dialog v-model="confirmDialog" max-width="340">
-      <v-card text="Deseja Ativar/Desativar o Cliente ?" title="Atenção !">
+      <v-card text="Deseja Ativar/Desativar o Produto ?" title="Atenção !">
         <template #actions>
           <v-btn
             class="ml-auto"
@@ -12,27 +12,27 @@
             class="ml-auto"
             text="Confirmar"
             color="error"
-            @click="confirmActiveInactiveDialog(clienteId)"
+            @click="confirmActiveInactiveDialog(produtoId)"
           ></v-btn>
         </template>
       </v-card>
     </v-dialog>
     <v-row>
       <v-col cols="12" class="button-title-container">
-        <h2>Tabela de Clientes</h2>
-        <CadastroClienteModal
+        <h2>Tabela de Produtos</h2>
+        <CadastroProdutoModal
           :open-modal="openModal"
-          :cliente-id="clienteId"
+          :produto-id="produtoId"
           @closed="handleModalClose"
         />
       </v-col>
       <v-col cols="12">
         <v-data-table
           :headers="headers"
-          :items="clientes"
+          :items="produtos"
           density="compact"
           item-key="name"
-          no-data-text="Nenhum Cliente Encontrado"
+          no-data-text="Nenhum Produto Encontrado"
           items-per-page-text="Itens por página"
         >
           <template #[`item.ativo`]="{ value }">
@@ -55,7 +55,7 @@
                 <v-list-item>
                   <v-list-item-title
                     class="cursor-pointer flex items-center"
-                    @click="editItem(item as Cliente)"
+                    @click="editItem(item as Produto)"
                   >
                     Editar
                   </v-list-item-title>
@@ -63,10 +63,10 @@
                 <v-list-item>
                   <v-list-item-title
                     class="cursor-pointer flex items-center"
-                    @click="activeInactiveItem(item as Cliente)"
+                    @click="activeInactiveItem(item as Produto)"
                   >
                     {{
-                      (item as Cliente).ativo === "Sim" ? "Inativar" : "Ativar"
+                      (item as Produto).ativo === "Sim" ? "Inativar" : "Ativar"
                     }}
                   </v-list-item-title>
                 </v-list-item>
@@ -84,15 +84,15 @@ import { defineComponent, reactive, toRefs, computed } from "vue";
 import { useStore } from "vuex";
 import type { VDataTable } from "vuetify/components";
 import { toast } from "vue3-toastify";
-import { Cliente } from "@/types/ClienteModel";
-import CadastroClienteModal from "@/components/CadastroClienteModal.vue";
+import { Produto } from "@/types/ProdutoModel";
+import CadastroProdutoModal from "@/components/CadastroProdutoModal.vue";
 
 type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 export default defineComponent({
-  name: "Clientes",
+  name: "Produtos",
   components: {
-    CadastroClienteModal,
+    CadastroProdutoModal,
   },
   setup() {
     const store = useStore();
@@ -100,40 +100,37 @@ export default defineComponent({
       { title: "Id", align: "center", key: "id" },
       { title: "Nome", align: "center", key: "name" },
       { title: "Ativo", align: "center", key: "ativo" },
-      { title: "Documento(CPF)", align: "center", key: "document" },
-      { title: "E-mail", align: "center", key: "email" },
-      { title: "Telefone", align: "center", key: "phone" },
       { title: "Ações", align: "center", key: "actions", sortable: false },
     ];
 
     const state = reactive({
       openModal: false,
-      clienteId: 0,
+      produtoId: 0,
       confirmDialog: false,
     });
 
     const handleModalClose = () => {
       state.openModal = false;
-      state.clienteId = 0;
+      state.produtoId = 0;
     };
 
-    const editItem = (item: Cliente) => {
-      state.clienteId = item.id;
+    const editItem = (item: Produto) => {
+      state.produtoId = item.id;
       state.openModal = true;
     };
 
-    const activeInactiveItem = (item: Cliente) => {
-      state.clienteId = item.id;
+    const activeInactiveItem = (item: Produto) => {
+      state.produtoId = item.id;
       state.confirmDialog = true;
     };
 
     const handleCloseActiveInactiveDialog = () => {
       state.confirmDialog = false;
-      state.clienteId = 0;
+      state.produtoId = 0;
     };
     const confirmActiveInactiveDialog = (id: number) => {
-      store.dispatch("ativarDesativarClienteExistente", id);
-      toast.success("Cliente modificado com sucesso", {
+      store.dispatch("ativarDesativarProdutoExistente", id);
+      toast.success("Produto modificado com sucesso", {
         autoClose: 3000,
       });
       handleCloseActiveInactiveDialog();
@@ -144,11 +141,11 @@ export default defineComponent({
       else return "green";
     };
 
-    const clientes = computed(() => store.getters.getClientes);
+    const produtos = computed(() => store.getters.getProdutos);
 
     return {
       headers,
-      clientes,
+      produtos,
       confirmActiveInactiveDialog,
       handleCloseActiveInactiveDialog,
       ...toRefs(state),

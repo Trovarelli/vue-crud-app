@@ -1,4 +1,5 @@
 export interface Produto {
   id: number;
-  nome: string;
+  name: string;
+  ativo: "Sim" | "Não";
 }
