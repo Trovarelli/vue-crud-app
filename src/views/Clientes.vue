@@ -74,7 +74,7 @@
                 <font-awesome-icon
                   icon="list-dots"
                   class="cursor-pointer"
-                  color="primary"
+                  color="#0c5693"
                   dark
                   v-bind="props"
                 />

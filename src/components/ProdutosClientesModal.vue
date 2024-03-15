@@ -17,7 +17,7 @@
                 <!-- O multiple esta habilitado condicionalmente devido a um bug do vuetify -->
                 <v-combobox
                   v-model="cliente.produtosIds"
-                  color="primary"
+                  color="#0c5693"
                   :items="produtos"
                   item-title="name"
                   item-value="id"
@@ -38,7 +38,7 @@
           <v-btn text="Cancelar" variant="plain" @click="handleClose"></v-btn>
 
           <v-btn
-            color="primary"
+            color="#0c5693"
             text="Associar"
             variant="tonal"
             @click="handleAssociarProdutos"

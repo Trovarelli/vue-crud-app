@@ -88,7 +88,7 @@ export default defineComponent({
 @import "@/assets/scss/_variables.scss";
 
 header {
-  background-color: #0c5693b6;
+  background-color: $primary;
   z-index: 99;
   width: 100%;
   position: fixed;
@@ -208,17 +208,15 @@ header {
 }
 
 .scrolled-nav {
-  background-color: $primary;
   box-shadow:
     0 4px 6px -1px rgb(0, 0, 0, 0.1),
     0 2px 4px -1px rgb(0, 0, 0, 0.06);
 
   nav {
     padding: 8px 0;
-
     .branding {
       img {
-        width: 60px;
+        width: 40px;
       }
     }
   }

@@ -5,7 +5,7 @@
         <v-btn
           class="text-none font-weight-regular"
           text="Cadastro de Produtos"
-          color="primary"
+          color="success"
           v-bind="activatorProps"
         ></v-btn>
       </template>
@@ -19,7 +19,7 @@
                   v-model="produto.ativo"
                   :label="`Ativo: ${produto.ativo}`"
                   false-value="Não"
-                  color="primary"
+                  color="#0c5693"
                   true-value="Sim"
                   hide-details
                 ></v-switch>
@@ -28,7 +28,7 @@
                 <v-text-field
                   v-model="produto.name"
                   :rules="nameRules"
-                  color="primary"
+                  color="#0c5693"
                   label="Nome"
                   required
                 ></v-text-field>
@@ -45,7 +45,7 @@
           <v-btn text="Cancelar" variant="plain" @click="handleClose"></v-btn>
 
           <v-btn
-            color="primary"
+            color="#0c5693"
             :text="produtoId ? 'Atualizar' : 'Cadastrar'"
             variant="tonal"
             @click="handleValidation"

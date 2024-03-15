@@ -5,7 +5,7 @@
         <v-btn
           class="text-none font-weight-regular"
           text="Cadastro de Clientes"
-          color="primary"
+          color="success"
           v-bind="activatorProps"
         ></v-btn>
       </template>
@@ -19,7 +19,7 @@
                   v-model="cliente.ativo"
                   :label="`Ativo: ${cliente.ativo}`"
                   false-value="Não"
-                  color="primary"
+                  color="#0c5693"
                   true-value="Sim"
                   hide-details
                 ></v-switch>
@@ -27,7 +27,7 @@
               <v-col cols="12" sm="8" md="10">
                 <v-text-field
                   v-model="cliente.name"
-                  color="primary"
+                  color="#0c5693"
                   :rules="nameRules"
                   label="Nome"
                   required
@@ -38,7 +38,7 @@
                 <v-text-field
                   v-model="cliente.document"
                   v-mask="'###.###.###-##'"
-                  color="primary"
+                  color="#0c5693"
                   :rules="documentRules"
                   label="Documento(CPF)"
                   required
@@ -48,7 +48,7 @@
                 <v-text-field
                   v-model="cliente.phone"
                   v-mask="['(##) ####-####', '(##) #####-####']"
-                  color="primary"
+                  color="#0c5693"
                   :rules="phoneRules"
                   label="Telefone"
                   required
@@ -57,7 +57,7 @@
               <v-col cols="12" sm="6">
                 <v-text-field
                   v-model="cliente.email"
-                  color="primary"
+                  color="#0c5693"
                   :rules="emailRules"
                   label="E-mail"
                   required
@@ -67,7 +67,7 @@
                 <!-- O multiple esta habilitado condicionalmente devido a um bug do vuetify -->
                 <v-combobox
                   v-model="cliente.produtosIds"
-                  color="primary"
+                  color="#0c5693"
                   :items="produtos"
                   item-title="name"
                   item-value="id"
@@ -88,7 +88,7 @@
           <v-btn text="Cancelar" variant="plain" @click="handleClose"></v-btn>
 
           <v-btn
-            color="primary"
+            color="#0c5693"
             :text="clienteId ? 'Atualizar' : 'Cadastrar'"
             variant="tonal"
             @click="handleValidation"
