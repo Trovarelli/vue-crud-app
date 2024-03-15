@@ -26,13 +26,15 @@
       </div>
       <transition name="mobile-nav">
         <ul v-show="mobileNav" class="dropdown-nav">
-          <li>
+          <li @click="toggleMobileNav">
             <router-link to="/" class="link"> Home </router-link>
           </li>
-          <li>
+
+          <li @click="toggleMobileNav">
             <router-link to="/clientes" class="link"> Clientes </router-link>
           </li>
-          <li>
+
+          <li @click="toggleMobileNav">
             <router-link to="/produtos" class="link"> produtos </router-link>
           </li>
         </ul>
@@ -86,7 +88,7 @@ export default defineComponent({
 @import "@/assets/scss/_variables.scss";
 
 header {
-  background-color: $primary;
+  background-color: #0c5693b6;
   z-index: 99;
   width: 100%;
   position: fixed;
@@ -178,7 +180,9 @@ header {
     background-color: white;
     top: 0;
     left: 0;
-
+    box-shadow:
+      0 4px 6px -1px rgb(0, 0, 0, 0.1),
+      0 2px 4px -1px rgb(0, 0, 0, 0.06);
     li {
       margin-left: 0;
 
@@ -204,7 +208,7 @@ header {
 }
 
 .scrolled-nav {
-  background-color: white;
+  background-color: $primary;
   box-shadow:
     0 4px 6px -1px rgb(0, 0, 0, 0.1),
     0 2px 4px -1px rgb(0, 0, 0, 0.06);
@@ -215,9 +219,6 @@ header {
     .branding {
       img {
         width: 60px;
-        box-shadow:
-          0 4px 6px -1px rgb(0, 0, 0, 0.1),
-          0 2px 4px -1px rgb(0, 0, 0, 0.06);
       }
     }
   }
