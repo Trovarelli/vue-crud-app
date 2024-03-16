@@ -195,9 +195,14 @@ export default defineComponent({
     const produtos = computed(() => store.getters.getProdutos);
 
     const saveCliente = () => {
+      const produtosIds =
+        typeof state.cliente.produtosIds[0] === "number"
+          ? state.cliente.produtosIds
+          : state.cliente.produtosIds.map((el: Produto) => el.id);
+
       store.dispatch("adicionarNovoCliente", {
         ...state.cliente,
-        produtosIds: state.cliente.produtosIds.map((el: Produto) => el.id),
+        produtosIds,
       });
       toast.success("Cliente cadastrado com sucesso", {
         autoClose: 3000,
@@ -205,9 +210,14 @@ export default defineComponent({
     };
 
     const updateCliente = () => {
+      const produtosIds =
+        typeof state.cliente.produtosIds[0] === "number"
+          ? state.cliente.produtosIds
+          : state.cliente.produtosIds.map((el: Produto) => el.id);
+
       store.dispatch("editarClienteExistente", {
         ...state.cliente,
-        produtosIds: state.cliente.produtosIds.map((el: Produto) => el.id),
+        produtosIds,
       });
       toast.success("Cliente editado com sucesso", {
         autoClose: 3000,
@@ -257,7 +267,7 @@ export default defineComponent({
       }
       if (props.clienteId !== 0 && state.dialog) {
         state.cliente = { ...store.getters.getClienteById(props.clienteId) };
-      } else if (!state.dialog) handleResetForm();
+      }
     });
 
     onMounted(() => {

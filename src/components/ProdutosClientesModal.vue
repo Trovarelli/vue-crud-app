@@ -99,9 +99,13 @@ export default defineComponent({
     const produtos = computed(() => store.getters.getProdutos);
 
     const handleAssociarProdutos = () => {
+      const produtosIds =
+        typeof state.cliente.produtosIds[0] === "number"
+          ? state.cliente.produtosIds
+          : state.cliente.produtosIds.map((el: Produto) => el.id);
       store.dispatch("editarClienteExistente", {
         ...state.cliente,
-        produtosIds: state.cliente.produtosIds.map((el: Produto) => el.id),
+        produtosIds,
       });
       toast.success("Cliente editado com sucesso", {
         autoClose: 3000,
