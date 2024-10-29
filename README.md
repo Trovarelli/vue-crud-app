@@ -44,14 +44,4 @@ Os testes unitários podem ser executados com o seguinte comando: npm run test:u
 
 ## Considerações Finais
 
-Primeiramente, gostaria de expressar minha gratidão pela oportunidade de demonstrar minhas habilidades por meio deste teste. Sem dúvida, foi um desafio, especialmente considerando o tempo limitado e minha necessidade de me atualizar sobre as práticas mais recentes do Vue.js.
-
 Durante o desenvolvimento, pude perceber como o Vue evoluiu, especialmente com a introdução do sistema de setup e hooks, que se assemelham mais ao estilo de desenvolvimento do React. Essa mudança não apenas facilitou meu entendimento do código, mas também tornou a experiência de desenvolvimento mais fluída e eficiente.
-
-O uso do Vuetify foi crucial para o sucesso deste projeto. Sem ele, certamente teria sido muito mais difícil alcançar os resultados desejados no prazo estipulado. Embora tenha havido desafios na implementação e adaptação às novas funcionalidades, a experiência foi extremamente valiosa e enriquecedora.
-
-Em relação aos testes unitários, reconheço que não pude escrever tantos quanto gostaria. Isso se deveu principalmente às complexidades na integração de componentes externos e à priorização das tarefas de implementação. No entanto, pude compreender a importância e o funcionamento dos testes em um ambiente Vue, e pretendo dedicar mais tempo a essa prática no futuro.
-
-Ao longo do processo, foquei na organização e estruturação do código, visando facilitar sua manutenção e extensibilidade. Acredito que essa abordagem contribuiu significativamente para a qualidade do resultado final.
-
-Em resumo, este projeto representou uma oportunidade de aprendizado e crescimento. Estou confiante de que as funcionalidades implementadas atendem às expectativas e demonstram minhas habilidades e dedicação ao desenvolvimento Vue.js. Estou ansioso para receber feedback e continuar aprimorando minhas habilidades nesta incrível tecnologia.
