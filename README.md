@@ -1,7 +1,3 @@
-# Cadastro de Clientes e Associação de Produtos
-
-Este repositório contém a implementação do teste técnico para cadastro de clientes e associação de produtos, utilizando Vue.js.
-
 ## Desafio
 
 O desafio consiste em construir um sistema simples de cadastro de clientes e associação de produtos. A tela de cadastro de produtos deve conter os campos "nome" e "ativo" (Sim ou Não), enquanto a tela de cadastro de clientes deve conter os campos "nome", "documento", "telefone", "e-mail" e "ativo" (Sim ou Não). Além disso, deve haver uma tela para associar os produtos a um cliente específico.
